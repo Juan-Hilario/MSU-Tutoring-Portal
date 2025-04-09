@@ -1,0 +1,13 @@
+[
+    {
+        "id": "001",
+        "studentId": "85626275",
+        "sessionId": "7800",
+        "name": {
+            "fName": "Ronald",
+            "lName": "McDonald"
+        },
+        "date": "2025-03-25",
+        "time": "09:33"
+    }
+]

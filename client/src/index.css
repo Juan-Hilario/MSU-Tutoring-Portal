@@ -1,0 +1,17 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  color: #434242;
+}
+
+input {
+  font-size: 16px;
+  background-color: #f8f3f3;
+  color: black;
+  border: 1px solid #D0D0D0;
+
+}
+
+button {
+  cursor: pointer;
+
+}

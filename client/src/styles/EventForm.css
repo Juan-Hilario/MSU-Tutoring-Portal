@@ -1,0 +1,260 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    background-color: #EEEFEF;
+    color: #434242;
+
+}
+
+.addSessionForm {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px;
+    flex: 1;
+    gap: 10px;
+
+}
+
+.courseTitleSection {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+
+}
+
+.title {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.formSubtitle {
+    margin: 10px 0 0 0;
+}
+
+.formInput {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.textInput {
+    font-size: 16px;
+    background-color: #f8f3f3;
+    color: black;
+    border: 1px solid #D0D0D0;
+
+}
+
+.formInput.selectDays {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    margin: 0;
+    border: none;
+
+}
+
+.daysOptions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.checkboxContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 20px;
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkboxContainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+
+    z-index: 2;
+
+}
+
+.checkmark {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    border: 2px #434242 solid;
+
+    border-radius: 3px;
+    transition: background-color ease .5s;
+}
+
+.checkboxContainer:hover input~.checkmark {
+    background-color: #9DDDFF;
+}
+
+.checkboxContainer input:checked~.checkmark {
+    background-color: #66c9ff;
+}
+
+.checkmark:after {
+    display: block;
+    color: #434242;
+    font-weight: bold;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#Monday span.checkmark:after {
+    content: "M";
+}
+
+#Tuesday span.checkmark:after,
+#Thursday span.checkmark:after {
+    content: "T";
+}
+
+#Wednesday span.checkmark:after {
+    content: "W";
+}
+
+#Friday span.checkmark:after {
+    content: "F";
+}
+
+.checkboxContainer input:checked~.checkmark:after {
+    color: white;
+}
+
+.selectTimes {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-end;
+
+
+}
+
+.wrapper {
+    background-color: #FFFFFF;
+    position: relative;
+    right: 0;
+    height: 100%;
+    color: black;
+    flex: 5;
+}
+
+.preview {
+    color: white;
+    font-weight: bold;
+    background: repeating-linear-gradient(45deg,
+            #FF8C4A,
+            #FF8C4A 5%,
+            #1A1919 5%,
+            #1A1919 10%);
+    background-size: 100px 100px;
+    animation: move-it 10s linear infinite;
+
+}
+
+@keyframes move-it {
+    0% {
+        background-position: initial;
+    }
+
+    100% {
+        background-position: 100px 0px;
+    }
+}
+
+.weekWrapper {
+    display: grid;
+    grid-auto-flow: column;
+    height: 100%;
+    grid-template-rows: 100%;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.day {
+    display: grid;
+    grid-auto-flow: row;
+    width: 100%;
+    /*height: 100%;*/
+    align-content: space-around;
+    border-bottom: #ebebeb solid 2px;
+}
+
+.weekRow.highlighted div.day {
+    border-bottom: none;
+}
+
+.weekRow {
+    display: grid;
+    grid-auto-flow: row;
+    column-gap: 20px;
+    align-items: start;
+    border-right: #ebebeb solid 2px;
+    width: 100%;
+    height: 100%;
+}
+
+.weekRow.highlighted {
+    background-color: #66c9ff;
+    border-right: none;
+}
+
+.dayText,
+.dateText {
+    color: #434242;
+}
+
+.weekRow.highlighted div.dayText,
+.weekRow.highlighted div.dateText {
+    color: white;
+}
+
+.dayText {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.dateText {
+    font-weight: bolder;
+}
+
+.events {
+    color: white;
+    font-weight: bold;
+    background-color: #d73535;
+    padding: 5%;
+    margin: 0 5%;
+    border-radius: 8px;
+}
+
+.event {
+    display: grid;
+    grid-auto-flow: row;
+    cursor: pointer;
+}

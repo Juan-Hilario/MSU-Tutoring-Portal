@@ -1,0 +1,34 @@
+[
+    {
+        "id": "123",
+        "name": {
+            "fName": "John",
+            "lName": "Smith"
+        },
+        "email": "smithj45@montclair.edu"
+    },
+    {
+        "id": "124",
+        "name": {
+            "fName": "Mary",
+            "lName": "Santos"
+        },
+        "email": "santosm6@montclair.edu"
+    },
+    {
+        "id": "126",
+        "name": {
+            "fName": "Pema",
+            "lName": "Sherpa"
+        },
+        "email": "sherpap1@montclair.edu"
+    },
+    {
+        "id": "128",
+        "name": {
+            "fName": "Devin",
+            "lName": "Ai"
+        },
+        "email": "aid1@montclair.edu"
+    }
+]

@@ -1,0 +1,94 @@
+.loginTop h1,
+.loginTop h4,
+.loginBottom h4 {
+    margin: 0;
+
+}
+
+.loginTop {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+
+
+}
+
+
+.loginBottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+
+.loginContainer {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    margin: 0px 50px;
+
+
+}
+
+.loginSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 10px;
+
+    background-color: #EEEFEF;
+    align-items: center;
+    width: 100%;
+    /* flex: 1 0 500px; */
+}
+
+.formButton {
+    background: #d1190d;
+    color: white;
+    border-radius: 8px;
+    border: solid 2px black;
+    padding: 4px 8px;
+}
+
+.loginInput {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.loginInput input {
+    font-size: 18px;
+
+}
+
+.loginInput label {
+    margin-right: 20px;
+
+}
+
+
+
+.loginSection form button {
+    margin-top: 48px;
+}
+
+
+.loginSection form .optionMenu button {
+    margin-top: 0px;
+}

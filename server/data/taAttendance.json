@@ -1,0 +1,90 @@
+[
+  {
+    "id": 2350,
+    "sessionId": "",
+    "taId": "",
+    "date": "",
+    "time": "",
+    "status": "Absent"
+  },
+  {
+    "id": 2351,
+    "sessionId": "7800",
+    "taId": "123",
+    "date": "2025-03-27",
+    "time": "",
+    "status": "Absent"
+  },
+  {
+    "id": 2352,
+    "sessionId": "677",
+    "taId": "124",
+    "date": "2025-03-27",
+    "time": "",
+    "status": "Absent"
+  },
+  {
+    "id": 2354,
+    "sessionId": "677",
+    "taId": "124",
+    "date": "2025-03-28",
+    "time": "",
+    "status": "Absent"
+  },
+  {
+    "id": 2355,
+    "sessionId": "7800",
+    "taId": "123",
+    "date": "2025-03-28",
+    "time": "",
+    "status": "Absent"
+  },
+  {
+    "id": 2356,
+    "sessionId": "7800",
+    "taId": "123",
+    "date": "2025-04-01",
+    "time": "",
+    "status": "Absent"
+  },
+  {
+    "id": 2357,
+    "sessionId": "900",
+    "taId": "128",
+    "date": "2025-04-03",
+    "time": "",
+    "status": "Absent"
+  },
+  {
+    "id": 2358,
+    "sessionId": "677",
+    "taId": "124",
+    "date": "2025-04-07",
+    "time": "",
+    "status": "Absent"
+  },
+  {
+    "id": 2359,
+    "sessionId": "900",
+    "taId": "128",
+    "date": "2025-04-07",
+    "time": "",
+    "status": "Absent"
+  },
+  {
+    "id": 2360,
+    "sessionId": "540",
+    "taId": "126",
+    "date": "2025-04-07",
+    "time": "",
+    "status": "Absent"
+  },
+  {
+    "id": 2361,
+    "sessionId": "540",
+    "taId": "126",
+    "date": "2025-04-09",
+    "time": "",
+    "status": "Absent"
+  }
+]

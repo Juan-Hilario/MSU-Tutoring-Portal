@@ -1,0 +1,22 @@
+.sx-react-calendar-wrapper {
+  width: 1200px;
+  max-width: 100vw;
+  height: 800px;
+  max-height: 90vh;
+}
+
+/* Hide time slots outside 9 AM - 3 PM */
+.sx-time-slot {
+  display: none;
+}
+
+/* Show only specific hours */
+.sx-time-slot[data-hour="9"],
+.sx-time-slot[data-hour="10"],
+.sx-time-slot[data-hour="11"],
+.sx-time-slot[data-hour="12"],
+.sx-time-slot[data-hour="13"],
+.sx-time-slot[data-hour="14"],
+.sx-time-slot[data-hour="15"] {
+  display: block;
+}

@@ -1,0 +1,78 @@
+[
+    {
+        "id": "7800",
+        "title": "CSIT-379",
+        "section": "01",
+        "courseName": "Computer Science Theory Tutoring",
+        "days": [
+            "Tuesday",
+            "Friday"
+        ],
+        "start": "09:00",
+        "end": "14:30",
+        "TAs": [
+            {
+                "name": "John",
+                "id": "123"
+            }
+        ],
+        "location": "CCIS Room 300"
+    },
+    {
+        "id": "677",
+        "title": "CSIT-431",
+        "section": "02",
+        "courseName": "Robotics",
+        "days": [
+            "Monday",
+            "Friday"
+        ],
+        "start": "09:00",
+        "end": "14:30",
+        "TAs": [
+            {
+                "name": "Mary",
+                "id": "124"
+            }
+        ],
+        "location": "CCIS Room 300"
+    },
+    {
+        "id": "900",
+        "title": "CSIT-355",
+        "section": "02",
+        "courseName": "Database Systems",
+        "days": [
+            "Monday",
+            "Thursday"
+        ],
+        "start": "09:00",
+        "end": "14:30",
+        "TAs": [
+            {
+                "name": "Devin",
+                "id": "128"
+            }
+        ],
+        "location": "CCIS Room 300"
+    },
+    {
+        "id": "540",
+        "title": "CSIT-455",
+        "section": "01",
+        "courseName": "Machine Learning",
+        "days": [
+            "Monday",
+            "Wednesday"
+        ],
+        "start": "09:00",
+        "end": "14:30",
+        "TAs": [
+            {
+                "name": "Pema",
+                "id": "126"
+            }
+        ],
+        "location": "CCIS Room 301"
+    }
+]
