@@ -36,6 +36,7 @@ function CheckIn() {
               label="Course"
               route="sessions"
               displayField="full_course_title"
+              multiSelect={false}
             />
             <button className="formButton" type="submit">
               Check In

@@ -7,7 +7,7 @@ router.get("/api/search/sessions", async (req, res) => {
 
   const { data, error } = await supabase
     .from("sessions")
-    .select("full_course_title")
+    .select("id, full_course_title")
     .or(
       `title.ilike.%${query}%, full_course_title.ilike.%${query}%, courseName.ilike.%${query}%`,
     );

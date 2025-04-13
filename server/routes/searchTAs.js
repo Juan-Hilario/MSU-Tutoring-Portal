@@ -7,7 +7,7 @@ router.get("/api/search/TAs", async (req, res) => {
 
   const { data, error } = await supabase
     .from("Profiles")
-    .select("full_name")
+    .select("id, full_name")
     .eq("role", "TA")
     .ilike("full_name", `%${query}%`);
 

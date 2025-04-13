@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/Login.css";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { User } from "../../App";
+interface LoginProps {
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+}
 
-function Login() {
+const Login: React.FC<LoginProps> = ({ setUser }) => {
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -12,28 +16,50 @@ function Login() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:3000/login", {
+      const res = await fetch("http://localhost:4000/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
+        credentials: "include",
       });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Something went wrong");
+      }
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      localStorage.setItem("token", data.session.access_token);
-      alert(
-        "Logged in " +
-          data.user.email +
-          " Session_Token: " +
-          data.session.access_token,
-      );
+
+      setUser(data);
+
+      // alert("Logged in " + data.user.email);
+      navigate("/dashboard");
     } catch (err) {
       alert("Error: " + err.message);
     }
   };
+
+  useEffect(() => {
+    fetch("/api/me", {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // Check if user has role before proceeding
+        if (data.role) {
+          setUser({
+            ...data.user,
+            role: data.role,
+          });
+        }
+      })
+      .catch(() => setUser(null));
+  }, []);
 
   return (
     <>
@@ -80,6 +106,6 @@ function Login() {
       </div>
     </>
   );
-}
+};
 
 export default Login;

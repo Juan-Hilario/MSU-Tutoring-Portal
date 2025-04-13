@@ -6,6 +6,8 @@ interface SearchSelectProps {
   label: string;
   route: string;
   displayField: string;
+  multiSelect: boolean;
+  onSelectChange?: (selected: { id: string; name: string }[]) => void;
 }
 
 const SearchSelect: React.FC<SearchSelectProps> = ({
@@ -13,12 +15,17 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
   label,
   route,
   displayField,
+  multiSelect,
+  onSelectChange,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [results, setResults] = useState([]);
   const [input, setInput] = useState("");
-  // const [pastInputs, setPastInputs] = useState([""]);
-  const [selectedResults, setSelectedResults] = useState<string[]>([]);
+
+  const [selectedResults, setSelectedResults] = useState<
+    { id: string; name: string }[]
+  >([]);
+
   const [isHover, setIsHover] = useState(false);
 
   const handleOnChange = async (e) => {
@@ -30,7 +37,7 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
       return;
     } else {
       fetch(
-        `http://localhost:3000/api/search/${route}?query=${encodeURIComponent(value)}`,
+        `http://localhost:4000/api/search/${route}?query=${encodeURIComponent(value)}`,
       )
         .then((res) => res.json())
         .then((data) => setResults(data))
@@ -38,9 +45,23 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
     }
   };
 
-  // const handleButtonClick = () = {
-  //
-  // }
+  const handleSelect = (result: any) => {
+    const selectedTA = {
+      id: result.id,
+      name: result[displayField],
+    };
+
+    let updatedSelection = multiSelect
+      ? [...selectedResults, selectedTA]
+      : [selectedTA];
+
+    setSelectedResults(updatedSelection);
+    setInput("");
+    setIsOpen(false);
+
+    onSelectChange?.(updatedSelection);
+  };
+  console.log("Selected: ", selectedResults);
 
   return (
     <>
@@ -49,22 +70,18 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
         <div className="selectedSearchResultContainer">
           {selectedResults.map((sResult) => (
             <button
+              key={sResult.id}
               className="selectedSearchResult"
               type="button"
-              onMouseEnter={() => setIsHover(true)}
-              onMouseLeave={() => setIsHover(false)}
+              onClick={() => {
+                const updated = selectedResults.filter(
+                  (item) => item.id !== sResult.id,
+                );
+                setSelectedResults(updated);
+                onSelectChange?.(updated);
+              }}
             >
-              {sResult}
-              {/* {isHover ? ( */}
-              {/*   <> */}
-              {/*     <button style={{ margin: 0 }} type="button"> */}
-              {/*       x */}
-              {/*     </button> */}
-              {/*     <div className="notShown">{sResult}</div> */}
-              {/*   </> */}
-              {/* ) : ( */}
-              {/*   <div>{sResult}</div> */}
-              {/* )} */}
+              {sResult.name}
             </button>
           ))}
         </div>
@@ -91,30 +108,29 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
             onChange={(e) => {
               handleOnChange(e);
               setIsOpen(true);
+              setInput(e.target.value);
             }}
             placeholder={`Search ${label}`}
             autoComplete="off"
+            value={input}
           />
           {/* )} */}
         </div>
 
         {/* Options Menu */}
-        {isOpen ? (
+        {isOpen && (
           <div className="optionMenu">
-            {results.map((result) => (
+            {results.map((result, i) => (
               <button
+                key={i}
                 type="button"
-                onClick={() => {
-                  // setInput(result[displayField]);
-                  selectedResults.push(result[displayField]);
-                  setIsOpen(false);
-                }}
+                onClick={() => handleSelect(result)}
               >
                 {result[displayField]}
               </button>
             ))}
           </div>
-        ) : null}
+        )}
       </div>
     </>
   );

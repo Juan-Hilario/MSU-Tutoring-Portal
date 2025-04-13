@@ -100,7 +100,7 @@ div.optionMenu {
 .selectedSearchResultContainer {
 	display: inline-flex;
 	gap: 10px;
-	margin: 20px 0;
+	margin: 0;
 
 }
 
@@ -111,19 +111,26 @@ button.selectedSearchResult {
 	background: #66c9ff;
 	padding: 4px 4px;
 	border-radius: 8px;
-	/* display: flex; */
+	position: relative;
 	/* flex-direction: column; */
+	margin: 0 !important;
+	border: 2px #434242 solid;
 
 
 }
 
 button.selectedSearchResult:hover {
 	color: transparent;
+	background-color: #31b6ff;
 
 }
 
-button.selectedSearchResult:hover ::after {
+button.selectedSearchResult:hover::after {
 	content: "X";
+	position: absolute;
+	color: black;
+	left: 0;
+	right: 0;
 
 
 }
