@@ -1,16 +1,20 @@
 .container {
     display: flex;
     flex-direction: row;
-    background-color: #EEEFEF;
-    color: #434242;
 
+}
+
+.sideNav {
+    color: #434242;
+    background-color: #EEEFEF;
+    padding: 20px;
 }
 
 .addSessionForm {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin: 20px;
+    /* margin: 20px; */
     flex: 1;
     gap: 10px;
 
@@ -148,9 +152,11 @@
 .selectTimes {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    /* width: 100%; */
     justify-content: space-between;
     align-items: flex-end;
+    align-self: center;
+    gap: 10px;
 
 
 }
@@ -257,4 +263,9 @@
     display: grid;
     grid-auto-flow: row;
     cursor: pointer;
+}
+
+.noSessions {
+    color: #434242;
+    font-weight: bold;
 }

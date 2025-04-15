@@ -1,0 +1,35 @@
+.header {
+    display: flex;
+    height: fit-content;
+    align-items: center;
+    justify-content: space-between;
+    background: #d1190d;
+    color: white;
+    padding: 0 20px 0 20px;
+    margin-bottom: 20px;
+
+}
+
+.headerRight {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.dashboardSessions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 48px;
+
+}
+
+.dashboardSession {
+    border: 2px black solid;
+    border-radius: 8px;
+    width: 50vw;
+    max-width: 680px;
+    height: 35vh;
+    max-height: 300px;
+}

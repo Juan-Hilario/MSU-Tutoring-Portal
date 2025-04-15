@@ -14,7 +14,7 @@ import { Session, DayString, TimeString, TAInfo } from "./sessionType";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 export interface User {
-  user: { id: string; email: string };
+  user: { fname: string; lname: string; id: string; email: string };
   role: "Prof" | "TA" | "User";
 }
 
@@ -22,6 +22,7 @@ function App() {
   const [rawSessions, setRawSessions] = useState([]);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userSessions, setUserSessions] = useState([]);
 
   //const [events, setEvents] = useState<Event[]>(sessions);
 
@@ -46,17 +47,43 @@ function App() {
       .then((data) => {
         if (data.user && data.role) {
           setUser({ user: data.user, role: data.role });
-          console.log(data.role);
         }
       })
       .catch(() => setUser(null))
       .finally(() => setLoading(false));
   }, []);
 
+  // Fetch User's sessions
+  useEffect(() => {
+    if (user) {
+      const fetchSessions = async () => {
+        try {
+          const params = new URLSearchParams({
+            userId: user.user.id,
+            role: user.role,
+          });
+          const res = await fetch(
+            `http://localhost:4000/api/userSessions?${params.toString()}`,
+          );
+
+          if (!res.ok) throw new Error("failed to fetch sessions");
+
+          const data = await res.json();
+          setUserSessions(data);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchSessions();
+    }
+  }, [user]);
+
   // Fetch sessions from database
   const fetchJson = () => {
     fetch("http://localhost:4000/api/sessions")
-      .then((response) => response.json()) // Parse JSON
+      .then((res) => res.json()) // Parse JSON
       .then((data) => {
         setRawSessions(data);
       }) // Set the state with the data
@@ -80,10 +107,9 @@ function App() {
           }
         />
         {/* <Route path="add" element={ token? <EventForm token={token}/>: <Navigate to="/login" replace} /> */}
-        <Route path="add" element={<EventForm />} />
+        <Route path="add" element={<EventForm user={user} />} />
 
         <Route path="signup" element={<SignUp />} />
-        <Route path="LOADTEMP" element={<Loading />} />
 
         <Route path="login" element={<Login setUser={setUser} />} />
 
@@ -95,7 +121,7 @@ function App() {
                 <Loading />
               </div>
             ) : user?.role === "Prof" ? (
-              <ProfDashboard />
+              <ProfDashboard user={user} userSessions={userSessions} />
             ) : user?.role === "TA" ? (
               <TADashboard />
             ) : (

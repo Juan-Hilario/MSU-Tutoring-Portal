@@ -82,7 +82,7 @@ const StartEndTimeDropdown: React.FC<StartEndTimeDropdownProps> = ({
       {/* START TIME INPUT */}
       <div className="dropdownContainer">
         <label htmlFor={name1}>{label1}</label>
-        <div className="textnput">
+        <div className="textInput">
           <input
             type="text"
             name={name1}

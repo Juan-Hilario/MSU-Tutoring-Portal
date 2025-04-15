@@ -80,7 +80,7 @@ router.get("/api/me", async (req, res) => {
 
   const { data: userRole, error: userRoleError } = await supabase
     .from("Profiles")
-    .select("role")
+    .select("role, fname, lname")
     .eq("id", userId)
     .single();
 
@@ -90,7 +90,12 @@ router.get("/api/me", async (req, res) => {
   console.log("email: ", data.user.email);
 
   res.json({
-    user: { id: data.user.id, email: data.user.email },
+    user: {
+      fname: userRole.fname,
+      lname: userRole.lname,
+      id: data.user.id,
+      email: data.user.email,
+    },
     role: userRole.role,
   });
 });

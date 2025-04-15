@@ -4,6 +4,8 @@ import StartEndTimeDropdown from "./sessionForm/StartEndTimeDropdown";
 import { Session, TimeString, DayString, TAInfo } from "../sessionType";
 import moment from "moment";
 import SearchSelect from "./Search/SearchSelect";
+import NavOptions from "./NavOptions";
+import { User } from "../App";
 
 const today = moment().format("YYYY-MM-DD");
 
@@ -25,7 +27,11 @@ const getWeekDates = (offset = 0) => {
   return weekDates;
 };
 
-function EventForm() {
+interface EventFormProps {
+  user: User | null;
+}
+
+const EventForm: React.FC<EventFormProps> = ({ user }) => {
   // const [time, setTime] = useState("");
   // const [endTime, setEndTime] = useState("");
   // const [startTime, setStartTime] = useState("");
@@ -34,6 +40,7 @@ function EventForm() {
   const [selectedTAs, setSelectedTAs] = useState<
     { id: string; name: string }[]
   >([]);
+
   const [formData, setFormData] = useState<{
     title: string;
     section: string;
@@ -53,6 +60,8 @@ function EventForm() {
     location: "",
     tas: [],
   });
+
+  const [formKey, setFormKey] = useState(0);
 
   const handleCheckboxChange = (event) => {
     const { value, checked } = event.target;
@@ -95,6 +104,19 @@ function EventForm() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      setFormData({
+        title: "",
+        section: "",
+        courseName: "",
+        days: [],
+        start: "00:00",
+        end: "00:00",
+        location: "",
+        tas: [],
+      });
+      setSelectedTAs([]);
+      setFormKey((prev) => prev + 1);
+      e.target.reset();
     } catch (err) {
       alert("Error: " + err.message);
     }
@@ -105,7 +127,8 @@ function EventForm() {
 
   return (
     <div className="container">
-      <div>
+      <div className="sideNav">
+        <NavOptions user={user} />
         <form className="addSessionForm" onSubmit={handleSubmit}>
           <h2 className="title">Add Session</h2>
           <h3 className="formSubtitle">Course Information</h3>
@@ -121,6 +144,7 @@ function EventForm() {
                 type="text"
                 placeholder="eg. CSIT431"
                 maxLength={10}
+                value={formData.title}
                 required
               ></input>
             </div>
@@ -145,6 +169,7 @@ function EventForm() {
                 size={5}
                 maxLength={3}
                 required
+                value={formData.section}
               ></input>
             </div>
           </div>
@@ -159,6 +184,7 @@ function EventForm() {
               type="text"
               placeholder="eg. Database Systems"
               required
+              value={formData.courseName}
             ></input>
           </div>
 
@@ -189,6 +215,7 @@ function EventForm() {
               label1="Start Time"
               label2="End Time"
               formHandleChange={handleInputChange}
+              key={formKey}
             />
           </div>
 
@@ -202,6 +229,7 @@ function EventForm() {
               type="text"
               placeholder="eg. CCIS 324"
               required
+              value={formData.location}
             ></input>
           </div>
 
@@ -213,6 +241,7 @@ function EventForm() {
             displayField="full_name"
             multiSelect={true}
             onSelectChange={setSelectedTAs}
+            key={formKey}
           />
 
           <button type="submit">Add Session</button>
@@ -247,9 +276,7 @@ function EventForm() {
                   </div>
                 </div>
               ) : (
-                <div style={{ color: "#434242", fontWeight: "bold" }}>
-                  No Sessions
-                </div>
+                <div className="noSessions">No Sessions</div>
               )}{" "}
             </div>
           ))}
@@ -257,6 +284,6 @@ function EventForm() {
       </div>
     </div>
   );
-}
+};
 
 export default EventForm;

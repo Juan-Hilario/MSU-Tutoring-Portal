@@ -8,23 +8,19 @@ html,
     overflow-y: hidden;
 }
 
-#root {
-    max-height: 100vh;
-    max-width: 100vw;
-    display: grid;
-}
+
 
 .calendar {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: 1fr 4fr;
+    display: flex;
+    flex-direction: row;
 }
 
-.sideNav {
-    height: 100%;
-    width: 100%;
-    background-color: #EEEFEF;
-}
+/* .sideNav { */
+/*     height: 100%; */
+/*     width: 100%; */
+/*     background-color: #EEEFEF; */
+/*     flex: 1; */
+/* } */
 
 .calendarControls {
     margin-top: 20px;

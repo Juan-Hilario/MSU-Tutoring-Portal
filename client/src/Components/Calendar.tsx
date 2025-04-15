@@ -39,7 +39,7 @@ const Calendar: React.FC<CalendarProps> = ({ sessions }) => {
 
   // fetches TA attendance data from backend
   useEffect(() => {
-    fetch("http://localhost:3000/api/taAttendance")
+    fetch("http://localhost:4000/api/taAttendance")
       .then((response) => response.json())
       .then((data) => setAttendance(data))
       .catch((error) => console.error("Error loading attendance:", error));
@@ -47,7 +47,7 @@ const Calendar: React.FC<CalendarProps> = ({ sessions }) => {
 
   const weekDates = getWeekDates(weeksFromToday);
   //console.log(sessions[0].days[0] === weekDates[2].day);
-  //console.log(sessions);
+  console.log(sessions);
 
   return (
     <>
@@ -145,9 +145,7 @@ const Calendar: React.FC<CalendarProps> = ({ sessions }) => {
                       </div>
                     ))
                 ) : (
-                  <div style={{ color: "white", fontWeight: "bold" }}>
-                    No Sessions
-                  </div>
+                  <div className="noSessions">No Sessions</div>
                 )}{" "}
               </div>
             ))}

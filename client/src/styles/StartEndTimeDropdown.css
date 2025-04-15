@@ -10,7 +10,7 @@ div.dropdownContainer {
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
-	width: 100%;
+	/* width: 100%; */
 
 }
 
@@ -49,6 +49,7 @@ div.optionMenu {
 	z-index: 2;
 	top: 100%;
 	right: 0;
+	left: 0;
 	height: fit-content;
 	max-height: 200px;
 	overflow-y: auto;
@@ -75,6 +76,7 @@ div.optionMenu {
 	padding: 10px;
 	border-bottom: 1px solid #ECE8E8;
 	border-radius: 0px;
+	text-align: center;
 }
 
 
