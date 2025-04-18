@@ -6,7 +6,7 @@ A Tutoring Portal for TA tutoring that
 - Report infomation like how many students have taken advantage of TA tutoring, which course have the most tutor attendance, how often a TA is present for a session scheduled, etc for statistical analysis
 - Informs students on tutoring session information
 - Informs TAs on how many student plan to go to tutoring sessions
-- Have Facial recognition login for TAs.
+- Have Facial recognition clock in for TAs.
 
 ## Development Plan
 ### Overview
@@ -24,7 +24,7 @@ While creating this more requirements should be gathered which will make it easi
 ## Frontend(React)
 - [x] Create components for TA/Professor Login and Student Checkin
 - [x] Create navigation between components
-- [ ] Add login session Token Authorization
+- [x] Add login session Token Authorization
 - [ ] Create Dashboard 
 - [ ] Finish styling the UI
 - [ ] Add custom animations 
@@ -45,8 +45,8 @@ Research databases and python Facial recognition package (DeepFace). These two t
 
 ## What is left to do?
 -   Need more data transfering routes for uploading data to database.
--   Dashboard for TAs and Professors/Admin
-    -   Reports should be able to get generated on the Professor/Admin side
+-   Dashboard for Professors/Admin
+-   Reports should be able to get generated on the Professor/Admin side
 -   Facial recognition integration
 -   Add login session Token Authorization
 -   Create Dashboard 

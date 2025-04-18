@@ -33,11 +33,6 @@ router.post("/api/add-session", async (req, res) => {
     return res.status(400).json({ error: sessionError.message });
   }
 
-  // const sessionId = session[0]?.id;
-  // if (!sessionId) {
-  //   return res.status(500).json({ error: "Failed to retrieve session ID" });
-  // }
-
   const updateResults = await Promise.all(
     tas.map(async (ta) => {
       const { data: updatedTA, error: taError } = await supabase

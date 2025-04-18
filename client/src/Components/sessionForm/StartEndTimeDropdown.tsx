@@ -32,6 +32,7 @@ const StartEndTimeDropdown: React.FC<StartEndTimeDropdownProps> = ({
     setInput: React.Dispatch<React.SetStateAction<string>>,
     setPastInputs: React.Dispatch<React.SetStateAction<string[]>>,
     pastInputs: string[],
+
     isStartTime: boolean = false,
   ) => {
     const newValue = input;

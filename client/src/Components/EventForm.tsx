@@ -38,7 +38,7 @@ const EventForm: React.FC<EventFormProps> = ({ user }) => {
   // const [session, setSession] = useState<Session>();
   // const [numOfTas, setNumOfTas] = useState(1);
   const [selectedTAs, setSelectedTAs] = useState<
-    { id: string; name: string }[]
+    { id: string; label: string }[]
   >([]);
 
   const [formData, setFormData] = useState<{
@@ -49,7 +49,7 @@ const EventForm: React.FC<EventFormProps> = ({ user }) => {
     start: string;
     end: string;
     location: string;
-    tas: { id: string; name: string }[];
+    tas: { id: string; label: string }[];
   }>({
     title: "",
     section: "",
@@ -80,6 +80,14 @@ const EventForm: React.FC<EventFormProps> = ({ user }) => {
     }));
   };
 
+  const handleTAChange = (taInfo: { id: string; label: string }[]) => {
+    console.log("taInfo:", taInfo);
+    setFormData((prev) => ({
+      ...prev,
+      tas: taInfo,
+    }));
+  };
+
   // Drop Down options
   const hours = ["09", "10", "11", "12", "13", "14", "15", "16", "17", "18"];
   const mins = ["00", "15", "30", "45"];
@@ -104,6 +112,7 @@ const EventForm: React.FC<EventFormProps> = ({ user }) => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
+      //clears form
       setFormData({
         title: "",
         section: "",
@@ -124,6 +133,7 @@ const EventForm: React.FC<EventFormProps> = ({ user }) => {
 
   const weekDates = getWeekDates(0);
   console.log(selectedTAs);
+  console.log(formData);
 
   return (
     <div className="container">
@@ -234,13 +244,14 @@ const EventForm: React.FC<EventFormProps> = ({ user }) => {
           </div>
 
           <h3 className="formSubtitle">TA(s)</h3>
+
           <SearchSelect
             name="tas"
             label="Select a TA"
             route="TAs"
-            displayField="full_name"
-            multiSelect={true}
-            onSelectChange={setSelectedTAs}
+            labelKey="full_name"
+            multi={true}
+            toForm={setSelectedTAs}
             key={formKey}
           />
 

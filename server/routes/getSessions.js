@@ -45,7 +45,26 @@ router.get("/api/userSessions", async (req, res) => {
     if (sessionsError)
       return res.status(500).json({ error: "Session not found" });
 
-    return res.json(sessions);
+    const sessionsWithTAs = await Promise.all(
+      sessions.map(async (session) => {
+        const { data: tas, error: taInfoError } = await supabase
+          .from("TAs")
+          .select("id, Profiles(fname, lname)")
+          .eq("sessionId", session.id);
+
+        if (taInfoError) {
+          console.error(
+            `Failed to fetch TAs for session ${session.id}:`,
+            taInfoError.message,
+          );
+          return { ...session, tas: [], error: taInfoError.message };
+        }
+
+        return { ...session, tas };
+      }),
+    );
+
+    return res.json(sessionsWithTAs);
   }
 });
 

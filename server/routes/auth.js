@@ -68,6 +68,25 @@ router.post("/login", async (req, res) => {
   });
 });
 
+// SignOut
+router.post("/api/logout", async (req, res) => {
+  const accessToken = req.cookies.access_token;
+  if (accessToken) {
+    const { error } = await supabase.auth.admin.signOut(accessToken);
+    if (error) {
+      console.error("Error revoking session: ", error.message);
+      return res.status(500).json({ error: error.message });
+    }
+  }
+
+  res.clearCookie("access-token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "Strict",
+  });
+  res.status(200).json({ message: "Logged out" });
+});
+
 // Retrieves User information
 router.get("/api/me", async (req, res) => {
   const token = req.cookies.access_token;

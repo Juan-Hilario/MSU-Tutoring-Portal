@@ -1,87 +1,105 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import "../../styles/StartEndTimeDropdown.css";
+
+interface Item {
+  id: string;
+  label: string;
+}
 
 interface SearchSelectProps {
   name: string;
   label: string;
   route: string;
-  displayField: string;
-  multiSelect: boolean;
-  onSelectChange?: (selected: { id: string; name: string }[]) => void;
+  labelKey: string;
+  multi: boolean;
+  toForm: Dispatch<SetStateAction<Item[]>>;
 }
 
 const SearchSelect: React.FC<SearchSelectProps> = ({
   name,
   label,
   route,
-  displayField,
-  multiSelect,
-  onSelectChange,
+  labelKey,
+  multi,
+  toForm,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [results, setResults] = useState([]);
-  const [input, setInput] = useState("");
+  // text input
+  const [searchValue, setSearchValue] = useState("");
 
-  const [selectedResults, setSelectedResults] = useState<
-    { id: string; name: string }[]
-  >([]);
+  // The options from menu
+  const [searchResults, setSearchResults] = useState<[]>([]);
 
-  const [isHover, setIsHover] = useState(false);
+  // the selected options
+  const [selectedItems, setSelectedItems] = useState<Item[]>([]);
 
-  const handleOnChange = async (e) => {
-    const value = e.target.value;
+  // Whether the dropdown is open
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    if (value === "") {
-      setIsOpen(false);
-      setResults([]);
+  // Searches Database for query
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchValue(query);
+
+    if (query === "") {
+      setDropdownOpen(false);
+      setSearchResults([]);
       return;
-    } else {
-      fetch(
-        `http://localhost:4000/api/search/${route}?query=${encodeURIComponent(value)}`,
-      )
-        .then((res) => res.json())
-        .then((data) => setResults(data))
-        .catch((err) => console.error(err));
+    }
+
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/search/${route}?query=${encodeURIComponent(query)}`,
+      );
+      const data = await res.json();
+      setSearchResults(data);
+      setDropdownOpen(true);
+    } catch (error) {
+      console.error("Search error:", error);
     }
   };
 
-  const handleSelect = (result: any) => {
-    const selectedTA = {
-      id: result.id,
-      name: result[displayField],
-    };
+  // When result is selected
+  const handleSelectItem = (item) => {
+    const formattedItem = { id: item.id, label: item[labelKey] };
+    const newSelection = multi
+      ? [...selectedItems, formattedItem]
+      : [formattedItem];
 
-    let updatedSelection = multiSelect
-      ? [...selectedResults, selectedTA]
-      : [selectedTA];
+    setSelectedItems(newSelection);
 
-    setSelectedResults(updatedSelection);
-    setInput("");
-    setIsOpen(false);
-
-    onSelectChange?.(updatedSelection);
+    setSearchValue("");
+    setDropdownOpen(false);
   };
-  console.log("Selected: ", selectedResults);
+
+  // When selected result button is clicked
+  const handleRemoveItem = (id: string) => {
+    if (multi) {
+      const updated = selectedItems.filter((item) => item.id !== id);
+      setSelectedItems(updated);
+    } else {
+      setSelectedItems([]);
+    }
+  };
+
+  useEffect(() => {
+    toForm(selectedItems);
+  }, [selectedItems]);
+  console.log(selectedItems);
 
   return (
     <>
       <div className="dropdownContainer">
         {/* Selected Result */}
         <div className="selectedSearchResultContainer">
-          {selectedResults.map((sResult) => (
+          {selectedItems.map((item) => (
             <button
-              key={sResult.id}
+              key={item.id}
               className="selectedSearchResult"
               type="button"
-              onClick={() => {
-                const updated = selectedResults.filter(
-                  (item) => item.id !== sResult.id,
-                );
-                setSelectedResults(updated);
-                onSelectChange?.(updated);
-              }}
+              onClick={() => handleRemoveItem(item.id)}
             >
-              {sResult.name}
+              {item.label}
             </button>
           ))}
         </div>
@@ -89,44 +107,27 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
         {/* Text Field */}
         <div className="loginInput">
           <label htmlFor={name}>{label}</label>
-          {/* {input != "" ? ( */}
-          {/*   <input */}
-          {/*     type="text" */}
-          {/*     name={name} */}
-          {/*     onChange={(e) => { */}
-          {/*       handleOnChange(e); */}
-          {/*       setIsOpen(true); */}
-          {/*     }} */}
-          {/*     placeholder={`Search ${label}`} */}
-          {/*     autoComplete="off" */}
-          {/*     value={input} */}
-          {/*   /> */}
-          {/* ) : ( */}
           <input
             type="text"
             name={name}
-            onChange={(e) => {
-              handleOnChange(e);
-              setIsOpen(true);
-              setInput(e.target.value);
-            }}
+            onChange={handleSearchChange}
             placeholder={`Search ${label}`}
             autoComplete="off"
-            value={input}
+            value={searchValue}
           />
           {/* )} */}
         </div>
 
-        {/* Options Menu */}
-        {isOpen && (
+        {/* Dropdown Results */}
+        {dropdownOpen && (
           <div className="optionMenu">
-            {results.map((result, i) => (
+            {searchResults.map((item, i) => (
               <button
                 key={i}
                 type="button"
-                onClick={() => handleSelect(result)}
+                onClick={() => handleSelectItem(item)}
               >
-                {result[displayField]}
+                {(item as any)[labelKey]}
               </button>
             ))}
           </div>
