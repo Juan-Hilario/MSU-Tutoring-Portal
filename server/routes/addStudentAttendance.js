@@ -3,7 +3,6 @@ const router = express.Router();
 const supabase = require("../supabaseClient");
 
 router.post("/api/add-studentAttendance", async (req, res) => {
-  console.log("HERE: ", req.body);
   const { fname, lname, sessionId, start } = req.body;
   const { data, error } = await supabase.from("studentAttendance").insert([
     {

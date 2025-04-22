@@ -1,0 +1,71 @@
+.clock {
+    font-size: 10vw;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.clockIn {
+    background-color: #FF9452;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transition: background-color ease .75s;
+}
+
+.clockIn.late {
+    background-color: #FF5252;
+}
+
+.clockIn.clocked {
+    background-color: #22FF3F;
+
+}
+
+.clockIn.out {
+    background-color: #DEDEDE;
+}
+
+.clockInLogout {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-weight: bold;
+}
+
+.clockInLogout:hover {
+    color: #585858;
+
+}
+
+.clockBtn {
+    border: none;
+    padding: 10px 12px;
+    color: white;
+    font-weight: bold;
+    transition: transform ease .60s, background-color ease .5s;
+}
+
+.clockBtn:hover {
+    transform: scale(1.1);
+}
+
+.clockBtn:active {
+    transform: scale(.9);
+}
+
+.clockBtn.in {
+
+    background: #22FF3F;
+}
+
+.clockBtn.in:hover {
+    background: #51EA65;
+}
+
+.clockBtn.out {
+    background: #FF9452;
+}
+
+.clockBtn.out:hover {
+    background: #FFA973;
+}

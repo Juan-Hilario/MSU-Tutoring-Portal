@@ -1,3 +1,4 @@
+import "../../styles/Login.css";
 import { useState } from "react";
 
 function SignUp() {
@@ -27,24 +28,55 @@ function SignUp() {
       alert("Error: " + err.message);
     }
   };
+
   return (
     <>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="fname">First Name</label>
-          <input type="text" name="fname" onChange={handleChange} />
+      <div style={{ display: "grid" }}>
+        <div className="loginTop">
+          <h1>Welcome to the Tutoring Portal</h1>
+        </div>
+        <div className="loginContainer">
+          <div className="loginSection">
+            <form onSubmit={handleSubmit}>
+              <h2>Sign Up</h2>
+              <div className="loginInput">
+                <label htmlFor="fname">First Name</label>
+                <input type="text" name="fname" onChange={handleChange} />
+              </div>
 
-          <label htmlFor="lname">Last Name</label>
-          <input type="text" name="lname" onChange={handleChange} />
+              <div className="loginInput">
+                <label htmlFor="lname">Last Name</label>
+                <input type="text" name="lname" onChange={handleChange} />
+              </div>
 
-          <label htmlFor="email">Email</label>
-          <input type="email" name="email" onChange={handleChange} />
+              <div className="loginInput">
+                <label htmlFor="email">Email</label>
+                <input type="email" name="email" onChange={handleChange} />
+              </div>
 
-          <label htmlFor="password">Password</label>
-          <input type="password" name="password" onChange={handleChange} />
+              <div className="loginInput">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                />
+              </div>
 
-          <button type="submit">Sign up</button>
-        </form>
+              <button className="formButton" type="submit">
+                Sign up
+              </button>
+            </form>
+          </div>
+          <div className="loginBottom">
+            <h4>
+              If you're a student <a href="/checkin">check in</a>{" "}
+            </h4>
+            <h4>
+              If you already have an account <a href="/login">login</a>{" "}
+            </h4>
+          </div>
+        </div>
       </div>
     </>
   );

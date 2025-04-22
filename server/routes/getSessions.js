@@ -18,24 +18,25 @@ router.get("/api/userSessions", async (req, res) => {
   const role = req.query.role;
 
   if (role === "TA") {
-    const { data: sessionId, error: sessionIdError } = await supabase
-      .from("TA")
+    const { data: session, error: sessionError } = await supabase
+      .from("TAs")
       .select("sessionId")
       .eq("id", userId)
       .single();
 
-    if (sessionIdError)
+    if (sessionError)
       return res.status(500).json({ error: "Session not found" });
 
     const { data: sessions, error: sessionsError } = await supabase
       .from("sessions")
       .select("id, title, section, courseName, days, start, end, location")
-      .eq("id", sessionId);
+      .eq("id", session.sessionId);
 
     if (sessionsError)
       return res.status(500).json({ error: "Session not found" });
 
-    return res.json([sessions]);
+    console.log(sessions);
+    return res.json(sessions);
   } else if (role === "Prof") {
     const { data: sessions, error: sessionsError } = await supabase
       .from("sessions")

@@ -34,6 +34,15 @@ app.use("/", addSession);
 addStudentAttendance = require("./routes/addStudentAttendance");
 app.use("/", addStudentAttendance);
 
+getStudentAttendance = require("./routes/getStudentAttendance");
+app.use("/", getStudentAttendance);
+
+addTaAttendance = require("./routes/addTaAttendance");
+app.use("/", addTaAttendance);
+
+getTaAttendance = require("./routes/getTaAttendance");
+app.use("/", getTaAttendance);
+
 searchTAs = require("./routes/searchTAs");
 app.use("/", searchTAs);
 

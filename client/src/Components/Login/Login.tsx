@@ -100,7 +100,7 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
         </div>
         <div className="loginBottom">
           <h4>
-            If you're a student check in <a href="/checkin">here</a>{" "}
+            If you're a student <a href="/checkin">check in</a>{" "}
           </h4>
         </div>
       </div>
