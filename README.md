@@ -10,6 +10,18 @@ A Tutoring Portal for TA tutoring that
 -   Informs TAs on how many student plan to go to tutoring sessions
 -   Have Facial recognition clock in for TAs.
 
+## How to Run this Project
+
+Firstly, node, npm, and python 3 need to be installed.
+
+The Frontend or (client) has to be initialized with the `npm install` and then could be run with `npm run dev`.
+
+The Backend or (server) has to be initialized with the `npm install` and then could be run with `npm run dev`.
+
+The Facial recognition sever (deepface-server) has to be initialized with the `pip install requirements.txt` and then could be run with `python app.py`.
+
+The Database should be running on Supabase but the project requires a `.env` file in the root of this project that contains the Supabase URL and api key. These are not uploaded here but can be given to whomever becomes in charge of this project or a new database could be made with a similar schema.
+
 ## Development Plan
 
 ### Overview
@@ -31,7 +43,7 @@ While creating this more requirements should be gathered which will make it easi
 -   [x] Create components for TA/Professor Login and Student Checkin
 -   [x] Create navigation between components
 -   [x] Add login session Token Authorization
--   [ ] Create Dashboard
+-   [x] Create Dashboard
 -   [x] Finish Clock In page
 -   [ ] Finish styling the UI
 -   [ ] Add custom animations
@@ -52,7 +64,8 @@ Research databases and python Facial recognition package (DeepFace). These two t
 -   [x] Set up SupaBase Database
 -   [x] Create Supabase Bucket for TA face images
 -   [x] Set up authorization for each account role.
--   [ ] Set up facial recognition to acutally go to the Clock in page
+-   [x] Set up facial recognition to acutally go to the Clock in page
+-   [ ] Reports should be able to get generated on the Professor/Admin side
 
 ## What is left to do?
 

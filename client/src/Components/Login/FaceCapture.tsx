@@ -1,11 +1,19 @@
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import "../../styles/FaceCapture.css";
+import { useNavigate } from "react-router-dom";
+// import { User } from "../../App";
 
 const FaceCapture: React.FC = () => {
     const webcamRef = useRef<Webcam | null>(null);
     const [result, setResult] = useState<any>(null);
     const [email, setEmail] = useState<string>("");
+    // const [sudoUser, setSudoUser] = useState<User>({
+    //     user: { fname: "", lname: "", id: "", email: "" },
+    //     role: "User",
+    // });
+
+    const navigate = useNavigate();
 
     const capture = async () => {
         if (!webcamRef.current) return;
@@ -20,7 +28,7 @@ const FaceCapture: React.FC = () => {
         formData.append("email", email);
 
         try {
-            const response = await fetch("http://localhost:4000/facial-auth", {
+            const response = await fetch("http://localhost:4000/api/face-auth", {
                 method: "POST",
                 body: formData,
             });
@@ -31,7 +39,19 @@ const FaceCapture: React.FC = () => {
 
             const data = await response.json();
             setResult(data);
-            console.log(data);
+
+            if (data === true) {
+                const params = new URLSearchParams({
+                    email: email,
+                });
+                const res = await fetch(`http://localhost:4000/api/face/me?${params.toString()}`);
+
+                if (!res.ok) throw new Error("failed to fetch user info");
+
+                const userData = await res.json();
+
+                navigate("/clockin_TempAuth", { state: { sudoUser: userData } });
+            }
         } catch (err) {
             console.error("Upload failed:", err);
         }
@@ -48,6 +68,22 @@ const FaceCapture: React.FC = () => {
         }
         return new File([u8arr], filename, { type: mime });
     };
+
+    // const getSudoUser = async () => {
+    //     try {
+    //         const params = new URLSearchParams({
+    //             email: email,
+    //         });
+    //         const res = await fetch(`http://localhost:4000/api/face/me?${params.toString()}`);
+
+    //         if (!res.ok) throw new Error("failed to fetch user info");
+
+    //         const data = await res.json();
+    //         setSudoUser(data);
+    //     } catch (err) {
+    //         console.error(err);
+    //     }
+    // };
 
     return (
         <div className="faceCapture">

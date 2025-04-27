@@ -47,7 +47,7 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
 
             // alert("Logged in " + data.user.email);
             navigate("/dashboard");
-        } catch (err) {
+        } catch (err: any) {
             alert("Error: " + err.message);
         }
     };

@@ -12,6 +12,8 @@ import Loading from "./Components/Loading";
 
 import { Session, DayString, TimeString, TAInfo } from "./sessionType";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import FaceClockInGuard from "./Components/dashboard/FaceClockInGuard";
+import FaceClockIn from "./Components/dashboard/FaceClockIn";
 
 export interface User {
     user: { fname: string; lname: string; id: string; email: string };
@@ -131,10 +133,9 @@ function App() {
                     }
                 />
 
-                <Route path="signup" element={<SignUp />} />
+                <Route path="/signup" element={<SignUp />} />
 
-                <Route path="login" element={<Login setUser={setUser} />} />
-
+                <Route path="/login" element={<Login setUser={setUser} />} />
                 <Route
                     path="/dashboard"
                     element={
@@ -155,6 +156,14 @@ function App() {
                 />
 
                 <Route path="checkin" element={<CheckIn />} />
+                <Route
+                    path="/clockin_TempAuth"
+                    element={
+                        <FaceClockInGuard>
+                            <FaceClockIn />
+                        </FaceClockInGuard>
+                    }
+                />
             </Routes>
         </BrowserRouter>
     );

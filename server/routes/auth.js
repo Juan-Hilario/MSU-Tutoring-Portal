@@ -91,7 +91,7 @@ router.post("/api/logout", async (req, res) => {
     res.status(200).json({ message: "Logged out" });
 });
 
-// Retrieves User information
+// Retrieves User information From Token
 router.get("/api/me", async (req, res) => {
     const token = req.cookies.access_token;
     if (!token) return res.status(401).json({ error: "Unauthorized" });
@@ -116,9 +116,36 @@ router.get("/api/me", async (req, res) => {
             fname: userRole.fname,
             lname: userRole.lname,
             id: data.user.id,
-            email: data.user.email,
+            email: email,
         },
         role: userRole.role,
+    });
+});
+
+// Retrieves User information with email FOR FACE AUTHORIZATION
+router.get("/api/face/me", async (req, res) => {
+    const email = req.query.email;
+
+    const { data: user, error: userError } = await supabase
+        .from("Profiles")
+        .select("id, role, fname, lname")
+        .eq("email", email)
+        .single();
+
+    if (userError || !user) {
+        throw new Error("User not found with email:", email);
+    }
+
+    // console.log("email: ", data.user.email);
+
+    res.json({
+        user: {
+            fname: user.fname,
+            lname: user.lname,
+            id: user.id,
+            email: email,
+        },
+        role: user.role,
     });
 });
 
@@ -127,7 +154,7 @@ console.log("Uploads directory path:", uploadsDir);
 
 const upload = multer({ dest: uploadsDir });
 
-router.post("/facial-auth", upload.single("photo"), async (req, res) => {
+router.post("/api/face-auth", upload.single("photo"), async (req, res) => {
     const filePath = req.file.path;
     const email = req.body.email;
 
@@ -197,10 +224,8 @@ router.post("/facial-auth", upload.single("photo"), async (req, res) => {
         const result = flaskRes.data;
         if (result.message) {
             res.json(result.message);
-        } else if (result["verified"]) {
-            // Going to navigate to ClockIn_tempAuth
         } else {
-            res.json(result);
+            res.json(result["verified"]);
         }
     } catch (err) {
         console.error(err);
