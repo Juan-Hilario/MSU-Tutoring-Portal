@@ -2,7 +2,6 @@
 .loginTop h4,
 .loginBottom h4 {
     margin: 0;
-
 }
 
 .loginTop {
@@ -11,10 +10,7 @@
     right: 0;
     margin-left: auto;
     margin-right: auto;
-
-
 }
-
 
 .loginBottom {
     position: absolute;
@@ -26,7 +22,6 @@
     margin-bottom: 20px;
 }
 
-
 .loginContainer {
     display: flex;
     flex-direction: row;
@@ -36,8 +31,6 @@
     gap: 20px;
 
     margin: 0px 50px;
-
-
 }
 
 .loginSection {
@@ -47,7 +40,7 @@
     gap: 20px;
     border-radius: 10px;
 
-    background-color: #EEEFEF;
+    background-color: #eeefef;
     align-items: center;
     width: 100%;
     /* flex: 1 0 500px; */
@@ -74,14 +67,11 @@
 
 .loginInput input {
     font-size: 18px;
-
 }
 
 .loginInput label {
     margin-right: 20px;
-
 }
-
 
 form button {
     margin-top: 48px;
@@ -91,7 +81,21 @@ form button {
     margin: 0;
 }
 
-
 .loginSection form .optionMenu button {
     margin-top: 0px;
+}
+
+.fcWindow {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+}
+
+.fcWindowContent {
+    z-index: 4;
 }

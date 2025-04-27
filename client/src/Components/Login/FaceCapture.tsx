@@ -1,0 +1,81 @@
+import React, { useRef, useState } from "react";
+import Webcam from "react-webcam";
+import "../../styles/FaceCapture.css";
+
+const FaceCapture: React.FC = () => {
+    const webcamRef = useRef<Webcam | null>(null);
+    const [result, setResult] = useState<any>(null);
+    const [email, setEmail] = useState<string>("");
+
+    const capture = async () => {
+        if (!webcamRef.current) return;
+
+        const screenshot = webcamRef.current.getScreenshot();
+        if (!screenshot) return;
+
+        const capturedFile = dataURLtoFile(screenshot, "capture.jpg");
+
+        const formData = new FormData();
+        formData.append("photo", capturedFile);
+        formData.append("email", email);
+
+        try {
+            const response = await fetch("http://localhost:4000/facial-auth", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Server error");
+            }
+
+            const data = await response.json();
+            setResult(data);
+            console.log(data);
+        } catch (err) {
+            console.error("Upload failed:", err);
+        }
+    };
+
+    const dataURLtoFile = (dataUrl: string, filename: string): File => {
+        const arr = dataUrl.split(",");
+        const mimeMatch = arr[0].match(/:(.*?);/);
+        const mime = mimeMatch ? mimeMatch[1] : "image/jpeg";
+        const bstr = atob(arr[1]);
+        const u8arr = new Uint8Array(bstr.length);
+        for (let i = 0; i < bstr.length; i++) {
+            u8arr[i] = bstr.charCodeAt(i);
+        }
+        return new File([u8arr], filename, { type: mime });
+    };
+
+    return (
+        <div className="faceCapture">
+            <div className="faceCaptureTop">
+                <h1>Facial Recognition</h1>
+                <h2>Please enter your email</h2>
+            </div>
+
+            <label htmlFor="email"></label>
+            <input
+                type="email"
+                placeholder="Email"
+                name="email"
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <div className="webcamContainer">
+                <Webcam
+                    ref={webcamRef}
+                    screenshotFormat="image/jpeg"
+                    videoConstraints={{ width: 300, height: 300 }}
+                    className="webcam"
+                />
+            </div>
+            <button onClick={capture} className="">
+                Capture Photo
+            </button>
+            {result != null && <p className="errorMsg">{result}</p>}
+        </div>
+    );
+};
+export default FaceCapture;
