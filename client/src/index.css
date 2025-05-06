@@ -21,5 +21,6 @@ input {
 
 button {
   cursor: pointer;
+  transition: background-color 250ms ease;
 
 }

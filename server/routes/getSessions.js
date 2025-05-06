@@ -29,30 +29,6 @@ router.get("/api/sessions", async (req, res) => {
   res.json(sessions || []);
 });
 
-router.get("/api/todaysSessions", async (req, res) => {
-  const { data: semesters, error: semesterError } = await supabase
-    .from("semesters")
-    .select("id")
-    .lte("start_date", today)
-    .gte("end_date", today)
-    .contains("days", [day]);
-
-  if (semesterError)
-    return res.status(404).json({ error: "Semester not found" });
-
-  const semesterId = semesters[0].id;
-
-  const { data: sessions, error: sessionsError } = await supabase
-    .from("sessions")
-    .select("*")
-    .eq("semesterId", semesterId);
-
-  if (sessionsError)
-    return res.status(500).json({ error: "Sessions not found" });
-
-  res.json(sessions || []);
-});
-
 router.get("/api/userSessions", async (req, res) => {
   const userId = req.query.userId;
   const role = req.query.role;

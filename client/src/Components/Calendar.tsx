@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Session } from "../sessionType";
-import Loading from "./Loading";
+import SearchSelect from "./Search/SearchSelect";
 
 import "../styles/Calendar.css";
 import moment from "moment";
@@ -31,20 +30,37 @@ interface attendance {
   id: string;
 }
 
-interface CalendarProps {
-  sessions: Session[];
+interface Session {
+  id: string;
+  title: string;
+  section: string;
+  courseName: string;
+  days: string[];
+  start: string;
+  end: string;
+  location: string;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ sessions }) => {
+const Calendar = () => {
   const [moreInfo, setMoreInfo] = useState(false);
   const [sessionInfo, setSessionInfo] = useState<Session | undefined>(
     undefined,
   );
-  const [TAs, setTAs] = useState([]);
+  // const [TAs, setTAs] = useState([]);
   const [attendance, setAttendance] = useState<attendance[]>([]);
   const [sessionDate, setSessionDate] = useState<string>();
   const [weeksFromToday, setWeeksFromToday] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<Session>({
+    id: "",
+    title: "",
+    section: "",
+    courseName: "",
+    days: [],
+    start: "",
+    end: "",
+    location: "",
+  });
 
   // fetches TA attendance data from backend
   useEffect(() => {
@@ -78,7 +94,7 @@ const Calendar: React.FC<CalendarProps> = ({ sessions }) => {
 
   const weekDates = getWeekDates(weeksFromToday);
   //console.log(sessions[0].days[0] === weekDates[2].day);
-  console.log(sessions);
+  // console.log(sessions);
   console.log(attendance);
 
   return (
@@ -124,7 +140,16 @@ const Calendar: React.FC<CalendarProps> = ({ sessions }) => {
                 {">"}
               </button>
             </div>
+            <SearchSelect
+              name="course"
+              label="Course"
+              route="sessions"
+              labelKey="full_course_title"
+              multi={false}
+              toForm={setSession}
+            />
           </div>
+
           <div className="wrapper">
             <div className="weekWrapper">
               {weekDates.map((day) => (
@@ -137,38 +162,37 @@ const Calendar: React.FC<CalendarProps> = ({ sessions }) => {
                     <div className="dayText">{day.day}</div>
                     <div className="dateText">{day.date}</div>
                   </div>
-                  {sessions.filter((session) => session.days.includes(day.day))
-                    .length != 0 ? (
-                    sessions
-                      .filter((session) => session.days.includes(day.day))
-                      .map((session) => (
-                        <div className="session">
-                          <div
-                            className="sessionInfo"
-                            key={session.id}
-                            onClick={() => {
-                              if (day.day === today) {
-                                setMoreInfo(true);
-                                setSessionInfo(session);
-                                setSessionDate(day.date);
-                                fetchTAsAttendance(session.id);
-                              }
-                            }}
-                          >
-                            <h3>
-                              {session.title}_{session.section}
-                            </h3>
-                            <span>{session.courseName}</span>
-                            <span>
-                              {session.start}-{session.end}
-                            </span>
-                            <span> {session.location}</span>
-                          </div>
+                  {session.days && session.days.length > 0 ? (
+                    session.days.includes(day.day) ? (
+                      <div className="session">
+                        <div
+                          className="sessionInfo"
+                          key={session.id}
+                          onClick={() => {
+                            if (day.day === today) {
+                              setMoreInfo(true);
+                              setSessionInfo(session);
+                              setSessionDate(day.date);
+                              fetchTAsAttendance(session.id);
+                            }
+                          }}
+                        >
+                          <h3>
+                            {session.title}_{session.section}
+                          </h3>
+                          <span>{session.courseName}</span>
+                          <span>
+                            {session.start}-{session.end}
+                          </span>
+                          <span> {session.location}</span>
                         </div>
-                      ))
+                      </div>
+                    ) : (
+                      <div className="noSessions"> No Session</div>
+                    )
                   ) : (
                     <div className="noSessions">No Sessions</div>
-                  )}{" "}
+                  )}
                 </div>
               ))}
             </div>

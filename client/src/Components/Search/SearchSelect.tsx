@@ -6,6 +6,16 @@ interface Item {
   id: string;
   label: string;
 }
+interface Session {
+  id: string;
+  title: string;
+  section: string;
+  courseName: string;
+  days: string[];
+  start: string;
+  end: string;
+  location: string;
+}
 
 interface SearchSelectProps {
   name: string;
@@ -13,7 +23,7 @@ interface SearchSelectProps {
   route: string;
   labelKey: string;
   multi: boolean;
-  toForm: Dispatch<SetStateAction<Item[]>>;
+  toForm: Dispatch<SetStateAction<Item[]>> | Dispatch<SetStateAction<Session>>;
 }
 
 const SearchSelect: React.FC<SearchSelectProps> = ({
@@ -60,13 +70,25 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
   };
 
   // When result is selected
-  const handleSelectItem = (item) => {
-    const formattedItem = { id: item.id, label: item[labelKey] };
-    const newSelection = multi
-      ? [...selectedItems, formattedItem]
-      : [formattedItem];
+  const handleSelectItem = (item: any) => {
+    const isSession =
+      "title" in item &&
+      "section" in item &&
+      "courseName" in item &&
+      "days" in item &&
+      "start" in item &&
+      "end" in item;
 
-    setSelectedItems(newSelection);
+    if (isSession) {
+      (toForm as Dispatch<SetStateAction<Session>>)(item);
+    } else {
+      const formattedItem = { id: item.id, label: item[labelKey] };
+      const newSelection = multi
+        ? [...selectedItems, formattedItem]
+        : [formattedItem];
+
+      setSelectedItems(newSelection);
+    }
 
     setSearchValue("");
     setDropdownOpen(false);
@@ -83,9 +105,11 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
   };
 
   useEffect(() => {
-    toForm(selectedItems);
+    const firstItem = selectedItems[0];
+    if (firstItem && "label" in firstItem) {
+      (toForm as Dispatch<SetStateAction<Item[]>>)(selectedItems);
+    }
   }, [selectedItems]);
-  console.log(selectedItems);
 
   return (
     <>
@@ -103,25 +127,23 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
             </button>
           ))}
         </div>
-
         {/* Text Field */}
-        {searchResults.length > 0 ? (
-          <>
-            <div className="loginInput">
-              <label htmlFor={name}>{label}</label>
-              <input
-                type="text"
-                name={name}
-                onChange={handleSearchChange}
-                placeholder={`Search ${label}`}
-                autoComplete="off"
-                value={searchValue}
-              />
-            </div>
-            // Dropdown Results
-            {dropdownOpen && (
-              <div className="optionMenu">
-                {searchResults.map((item, i) => (
+        <>
+          <div className="loginInput">
+            <label htmlFor={name}>{label}</label>
+            <input
+              type="text"
+              name={name}
+              onChange={handleSearchChange}
+              placeholder={`Search ${label}`}
+              autoComplete="off"
+              value={searchValue}
+            />
+          </div>
+          {dropdownOpen && (
+            <div className="optionMenu">
+              {searchResults.length > 0 &&
+                searchResults.map((item, i) => (
                   <button
                     key={i}
                     type="button"
@@ -130,12 +152,9 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
                     {(item as any)[labelKey]}
                   </button>
                 ))}
-              </div>
-            )}
-          </>
-        ) : (
-          <p style={{ color: "red" }}>No {name}s</p>
-        )}
+            </div>
+          )}
+        </>
       </div>
     </>
   );

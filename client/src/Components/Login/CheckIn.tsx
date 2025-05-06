@@ -86,56 +86,66 @@ function CheckIn() {
 
   return (
     <>
-      <div className="loginTop">
-        <h1>Welcome to the Tutoring Portal</h1>
-        <h4>{msgsArray[msg]}</h4>
-      </div>
-      <div className="loginContainer">
-        <div className="loginSection">
-          <form onSubmit={handleSubmit} action="">
-            <h2>Student Check In</h2>
-            <div className="loginInput">
-              <label htmlFor="fname">First Name</label>
-              <input
-                onChange={(e) => handleInputChange("fname", e.target.value)}
-                required
-                autoComplete="off"
-                name="fname"
-                type="text"
-              />
-            </div>
-            <div className="loginInput">
-              <label htmlFor="lname">Last Name</label>
-              <input
-                onChange={(e) => handleInputChange("lname", e.target.value)}
-                required
-                autoComplete="off"
-                name="lname"
-                type="text"
-              />
-            </div>
-            <SearchSelect
-              name="course"
-              label="Course"
-              route="todaysSessions"
-              labelKey="full_course_title"
-              multi={false}
-              toForm={setSelectedSession}
-              key={formKey}
-            />
-            <div style={{ marginTop: "20px" }}>
-              <TimeDropdown
-                times={timeOptions}
-                name="start"
-                label="Choose time in advance"
-                formHandleChange={handleInputChange}
+      <div className="login">
+        <div className="loginTop">
+          <h1>Welcome to the Tutoring Portal</h1>
+          <h4>{msgsArray[msg]}</h4>
+        </div>
+        <div className="loginContainer">
+          <div className="loginFormSection">
+            <form onSubmit={handleSubmit} action="">
+              <h2>Student Check In</h2>
+              <div className="loginInput">
+                <label htmlFor="fname">First Name</label>
+                <input
+                  onChange={(e) => handleInputChange("fname", e.target.value)}
+                  required
+                  autoComplete="off"
+                  name="fname"
+                  type="text"
+                />
+              </div>
+              <div className="loginInput">
+                <label htmlFor="lname">Last Name</label>
+                <input
+                  onChange={(e) => handleInputChange("lname", e.target.value)}
+                  required
+                  autoComplete="off"
+                  name="lname"
+                  type="text"
+                />
+              </div>
+              <SearchSelect
+                name="course"
+                label="Course"
+                route="todaysSessions"
+                labelKey="full_course_title"
+                multi={false}
+                toForm={setSelectedSession}
                 key={formKey}
               />
-            </div>
-            <button className="formButton" type="submit">
-              Check In
-            </button>
-          </form>
+              <div style={{ marginTop: "20px" }}>
+                <TimeDropdown
+                  times={timeOptions}
+                  name="start"
+                  label="Choose time in advance"
+                  formHandleChange={handleInputChange}
+                  key={formKey}
+                />
+              </div>
+              <button className="formButton" type="submit">
+                Check In
+              </button>
+            </form>
+          </div>
+        </div>
+        <div className="loginBottom">
+          <h4>
+            If you already have an account <a href="/login">login</a>{" "}
+          </h4>
+          <h4>
+            Need to make an account? <a href="/signup">signup</a>{" "}
+          </h4>
         </div>
       </div>
     </>

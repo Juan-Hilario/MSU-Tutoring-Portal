@@ -45,8 +45,8 @@ While creating this more requirements should be gathered which will make it easi
 -   [x] Add login session Token Authorization
 -   [x] Create Dashboard
 -   [x] Finish Clock In page
--   [ ] Finish styling the UI
--   [ ] Add custom animations
+-   [x] Finish styling the UI
+-   [x] Add custom animations
 
 ## Backend(Express)
 
@@ -65,12 +65,7 @@ Research databases and python Facial recognition package (DeepFace). These two t
 -   [x] Create Supabase Bucket for TA face images
 -   [x] Set up authorization for each account role.
 -   [x] Set up facial recognition to acutally go to the Clock in page
--   [ ] Reports should be able to get generated on the Professor/Admin side
+-   [x] Reports should be able to get generated on the Professor/Admin side
 
 ## What is left to do?
 
--   Dashboard for Professors/Admin
--   Reports should be able to get generated on the Professor/Admin side
--   Finish styling the UI
--   Add custom animations
--   Set up authorization for Each account role.

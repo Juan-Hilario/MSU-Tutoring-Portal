@@ -31,12 +31,12 @@ function SignUp() {
 
   return (
     <>
-      <div style={{ display: "grid" }}>
+      <div className="login">
         <div className="loginTop">
           <h1>Welcome to the Tutoring Portal</h1>
         </div>
         <div className="loginContainer">
-          <div className="loginSection">
+          <div className="loginFormSection">
             <form onSubmit={handleSubmit}>
               <h2>Sign Up</h2>
               <div className="loginInput">
@@ -68,14 +68,14 @@ function SignUp() {
               </button>
             </form>
           </div>
-          <div className="loginBottom">
-            <h4>
-              If you're a student <a href="/checkin">check in</a>{" "}
-            </h4>
-            <h4>
-              If you already have an account <a href="/login">login</a>{" "}
-            </h4>
-          </div>
+        </div>
+        <div className="loginBottom">
+          <h4>
+            If you're a student <a href="/checkin">check in</a>{" "}
+          </h4>
+          <h4>
+            If you already have an account <a href="/login">login</a>{" "}
+          </h4>
         </div>
       </div>
     </>
