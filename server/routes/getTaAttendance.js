@@ -34,4 +34,27 @@ router.get("/api/TaAttendanceStatus", async (req, res) => {
   }
 });
 
+router.get("/api/TaAttendance", async (req, res) => {
+  const { sessionId } = req.query;
+  if (!sessionId) {
+    return res.status(400).json({ error: "Missing SessionId parameter" });
+  }
+
+  const { data: TAs, error: TAsError } = await supabase
+    .from("TAs")
+    .select(
+      `id,
+      Profiles(fname, lname),
+      Attendance: taAttendance(taId, date)`,
+    )
+    .eq("sessionId", sessionId)
+    .eq("taAttendance.date", today);
+
+  if (TAsError) {
+    console.error("Supabase error:", TAsError);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+  return res.json(TAs);
+});
+
 module.exports = router;

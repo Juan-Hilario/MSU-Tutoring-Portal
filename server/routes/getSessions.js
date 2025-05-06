@@ -1,16 +1,56 @@
 const express = require("express");
 const router = express.Router();
 const supabase = require("../supabaseClient");
+const moment = require("moment");
+
+const today = moment().format("YYYY-MM-DD");
+const day = moment().format("dddd");
 
 router.get("/api/sessions", async (req, res) => {
+  const { data: semesters, error: semesterError } = await supabase
+    .from("semesters")
+    .select("id")
+    .lte("start_date", today)
+    .gte("end_date", today);
+
+  if (semesterError)
+    return res.status(404).json({ error: "Semester not found" });
+
+  const semesterId = semesters[0].id;
+
   const { data: sessions, error: sessionsError } = await supabase
     .from("sessions")
-    .select("*");
+    .select("*")
+    .eq("semesterId", semesterId);
 
   if (sessionsError)
     return res.status(500).json({ error: "Sessions not found" });
 
-  res.json(sessions);
+  res.json(sessions || []);
+});
+
+router.get("/api/todaysSessions", async (req, res) => {
+  const { data: semesters, error: semesterError } = await supabase
+    .from("semesters")
+    .select("id")
+    .lte("start_date", today)
+    .gte("end_date", today)
+    .contains("days", [day]);
+
+  if (semesterError)
+    return res.status(404).json({ error: "Semester not found" });
+
+  const semesterId = semesters[0].id;
+
+  const { data: sessions, error: sessionsError } = await supabase
+    .from("sessions")
+    .select("*")
+    .eq("semesterId", semesterId);
+
+  if (sessionsError)
+    return res.status(500).json({ error: "Sessions not found" });
+
+  res.json(sessions || []);
 });
 
 router.get("/api/userSessions", async (req, res) => {

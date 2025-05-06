@@ -11,10 +11,10 @@ const cookieParser = require("cookie-parser");
 app.use(express.json());
 
 app.use(
-    cors({
-        origin: "http://localhost:5173",
-        credentials: true,
-    })
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
 );
 
 app.use(cookieParser());
@@ -46,6 +46,9 @@ app.use("/", getTaAttendance);
 searchTAs = require("./routes/searchTAs");
 app.use("/", searchTAs);
 
+reports = require("./routes/reports");
+app.use("/", reports);
+
 // const dataFolder = path.join(__dirname, "data");
 
 //  request for attendance.json
@@ -72,16 +75,16 @@ app.use("/", searchTAs);
 
 //GET request for TAs supabaseClient.js
 app.get("/tas", async (req, res) => {
-    const { data, err } = await supabase.from("TAs").select("*");
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(data);
-    console.log("Fetched:", data);
+  const { data, err } = await supabase.from("TAs").select("*");
+  if (err) return res.status(500).json({ error: err.message });
+  res.json(data);
+  console.log("Fetched:", data);
 });
 
 app.get("/", (req, res) => {
-    res.send("This is the backend");
+  res.send("This is the backend");
 });
 
 app.listen(4000, () => {
-    console.log("Server started on port 4000");
+  console.log("Server started on port 4000");
 });
