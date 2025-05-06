@@ -88,11 +88,7 @@ const SessionCard: React.FC<SessionCardProps> = ({ session }) => {
             </div>
           </div>
         </div>
-        <div className="sessionOptions">
-          <button>View Attendance Record</button>
-          {/* <button>option</button>
-                                <button>option</button> */}
-        </div>
+        <div className="sessionOptions"></div>
       </div>
     </>
   );

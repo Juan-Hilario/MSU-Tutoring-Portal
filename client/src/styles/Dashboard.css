@@ -21,6 +21,23 @@
     margin: 10px;
 }
 
+.headerLeft {
+    display: flex;
+
+}
+
+.headerLeft button {
+    font-size: 20px;
+    border: none;
+    background-color: transparent;
+    color: white;
+    transition: background-color ease 300ms;
+}
+
+.headerLeft button:hover {
+    background-color: rgba(255, 255, 255, .1);
+}
+
 .headerRight {
     display: flex;
     flex-direction: column;
@@ -70,4 +87,30 @@
     margin: 10px 0 0 0;
 }
 
-.attendanceStatus {}
+.reportFormInput {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 0 20px 20px;
+}
+
+.reportSemester {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+}
+
+.mostPopularTimes {
+    display: flex;
+    width: 100%;
+    margin: auto;
+    align-items: center;
+}
+
+.reportSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px;
+}

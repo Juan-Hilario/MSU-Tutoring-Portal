@@ -1,6 +1,7 @@
 import { User } from "../../App";
 import "../../styles/Dashboard.css";
 import SessionCard from "./SessionCard";
+import ReportForm from "./ReportForm";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -24,13 +25,16 @@ interface UserSession {
 interface ProfDashboardProps {
   user: User;
   userSessions: UserSession[];
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 const ProfDashboard: React.FC<ProfDashboardProps> = ({
   user,
   userSessions,
+  setUser,
 }) => {
   const navigate = useNavigate();
+  const [page, setPage] = useState<"Sessions" | "Generate Report">("Sessions");
 
   const handleLogout = async () => {
     try {
@@ -41,6 +45,7 @@ const ProfDashboard: React.FC<ProfDashboardProps> = ({
       if (!res.ok) {
         console.error("Failed to logout");
       } else {
+        setUser(null);
         navigate("/login");
       }
     } catch (error) {
@@ -52,23 +57,35 @@ const ProfDashboard: React.FC<ProfDashboardProps> = ({
     <>
       <div className="dashboardContainer">
         <div className="header">
-          <h2>Tutoring Portal Dashboard</h2>
+          <div className="headerLeft">
+            <h2>Tutoring Portal Dashboard</h2>
+            <button onClick={() => setPage("Sessions")}>Sessions</button>
+            <button onClick={() => setPage("Generate Report")}>
+              Generate Report
+            </button>
+          </div>
+
           <div className="headerRight">
             Logged in as {user.user.fname}{" "}
             <button onClick={() => handleLogout()}>Log out</button>
           </div>
         </div>
-
-        <div className="dashboardSessions">
-          {userSessions.map((session) => (
-            <SessionCard key={session.id} session={session} />
-          ))}
-
-          {/* Add Session Button */}
-          <div>
-            <button onClick={() => navigate("/add")}>Add Session</button>
+        {page === "Sessions" ? (
+          <div className="dashboardSessions">
+            <h2>Your Tutoring Sessions</h2>
+            {userSessions.map((session) => (
+              <SessionCard key={session.id} session={session} />
+            ))}
+            <div>
+              <button onClick={() => navigate("/add")}>Add Session</button>
+            </div>
           </div>
-        </div>
+        ) : page === "Generate Report" ? (
+          <div>
+            <h2>Generate Report</h2>
+            <ReportForm />
+          </div>
+        ) : null}
       </div>
     </>
   );

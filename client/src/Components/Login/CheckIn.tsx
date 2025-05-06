@@ -117,7 +117,7 @@ function CheckIn() {
             <SearchSelect
               name="course"
               label="Course"
-              route="sessions"
+              route="todaysSessions"
               labelKey="full_course_title"
               multi={false}
               toForm={setSelectedSession}

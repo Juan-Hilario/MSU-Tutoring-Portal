@@ -105,32 +105,36 @@ const SearchSelect: React.FC<SearchSelectProps> = ({
         </div>
 
         {/* Text Field */}
-        <div className="loginInput">
-          <label htmlFor={name}>{label}</label>
-          <input
-            type="text"
-            name={name}
-            onChange={handleSearchChange}
-            placeholder={`Search ${label}`}
-            autoComplete="off"
-            value={searchValue}
-          />
-          {/* )} */}
-        </div>
-
-        {/* Dropdown Results */}
-        {dropdownOpen && (
-          <div className="optionMenu">
-            {searchResults.map((item, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => handleSelectItem(item)}
-              >
-                {(item as any)[labelKey]}
-              </button>
-            ))}
-          </div>
+        {searchResults.length > 0 ? (
+          <>
+            <div className="loginInput">
+              <label htmlFor={name}>{label}</label>
+              <input
+                type="text"
+                name={name}
+                onChange={handleSearchChange}
+                placeholder={`Search ${label}`}
+                autoComplete="off"
+                value={searchValue}
+              />
+            </div>
+            // Dropdown Results
+            {dropdownOpen && (
+              <div className="optionMenu">
+                {searchResults.map((item, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => handleSelectItem(item)}
+                  >
+                    {(item as any)[labelKey]}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          <p style={{ color: "red" }}>No {name}s</p>
         )}
       </div>
     </>

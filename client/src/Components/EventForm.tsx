@@ -28,7 +28,7 @@ const getWeekDates = (offset = 0) => {
 };
 
 interface EventFormProps {
-  user: User | null;
+  user: User;
 }
 
 const EventForm: React.FC<EventFormProps> = ({ user }) => {
@@ -50,6 +50,7 @@ const EventForm: React.FC<EventFormProps> = ({ user }) => {
     end: string;
     location: string;
     tas: { id: string; label: string }[];
+    profId: string;
   }>({
     title: "",
     section: "",
@@ -59,6 +60,7 @@ const EventForm: React.FC<EventFormProps> = ({ user }) => {
     end: "00:00",
     location: "",
     tas: [],
+    profId: user.user.id,
   });
 
   const [formKey, setFormKey] = useState(0);
@@ -122,6 +124,7 @@ const EventForm: React.FC<EventFormProps> = ({ user }) => {
         end: "00:00",
         location: "",
         tas: [],
+        profId: user.user.id,
       });
       setSelectedTAs([]);
       setFormKey((prev) => prev + 1);

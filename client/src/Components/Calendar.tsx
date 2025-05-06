@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Session } from "../sessionType";
-import { Attendance } from "../taAttendanceType";
+import Loading from "./Loading";
+
 import "../styles/Calendar.css";
 import moment from "moment";
 
@@ -24,6 +25,12 @@ const getWeekDates = (offset = 0) => {
   return weekDates;
 };
 
+interface attendance {
+  Attendance: [];
+  Profiles: { fname: string; lname: string };
+  id: string;
+}
+
 interface CalendarProps {
   sessions: Session[];
 }
@@ -33,125 +40,141 @@ const Calendar: React.FC<CalendarProps> = ({ sessions }) => {
   const [sessionInfo, setSessionInfo] = useState<Session | undefined>(
     undefined,
   );
-  const [attendance, setAttendance] = useState<Attendance[]>([]);
+  const [TAs, setTAs] = useState([]);
+  const [attendance, setAttendance] = useState<attendance[]>([]);
   const [sessionDate, setSessionDate] = useState<string>();
   const [weeksFromToday, setWeeksFromToday] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   // fetches TA attendance data from backend
   useEffect(() => {
-    fetch("http://localhost:4000/api/taAttendance")
-      .then((response) => response.json())
+    fetch("http://localhost:4000/api/TaAttendanceStatus")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => setAttendance(data))
-      .catch((error) => console.error("Error loading attendance:", error));
+      .catch((error) => {
+        console.error("Error loading attendance:", error);
+        setAttendance([]);
+      })
+      .finally(() => setLoading(false));
   }, []);
+
+  const fetchTAsAttendance = async (sessionId: string) => {
+    const query = sessionId;
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/TaAttendance?sessionId=${encodeURIComponent(query)}`,
+      );
+      const data = await res.json();
+      setAttendance(data);
+    } catch (error) {
+      console.error("Search error:", error);
+    }
+  };
 
   const weekDates = getWeekDates(weeksFromToday);
   //console.log(sessions[0].days[0] === weekDates[2].day);
   console.log(sessions);
+  console.log(attendance);
 
   return (
     <>
-      {sessionInfo && sessionDate && (
-        <div className={`infoPopup ${moreInfo === true ? "shown" : " "}`}>
-          <div className="topContent">
-            <h2>{sessionInfo.title}</h2>
-            <button onClick={() => setMoreInfo(false)}>x</button>
-          </div>
-          {/* checks to see if there is sessionInfo before displaying */}
-          <div className="popupContent">
-            <div>{sessionInfo.id}</div>
-            {sessionInfo.TAs.map((TA) => (
-              <div>
-                {`${TA.name} `}
-                <span
-                  className={`taStatus ${
-                    attendance.find(
-                      (record) =>
-                        record.taId === TA.id && record.date === sessionDate,
-                    )?.status === "Present"
-                      ? "present"
-                      : "absent"
-                  }`}
-                >
-                  {attendance.find(
-                    (record) =>
-                      record.taId === TA.id && record.date === sessionDate,
-                  )?.status === "Present"
-                    ? "present"
-                    : "absent"}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="calendar">
-        <div className="sideNav">
-          {/*Calendar Controls */}
-          <div className="calendarControls">
-            <button onClick={() => setWeeksFromToday(0)}>Today</button>
-            <button
-              className="arrowButtons"
-              onClick={() => setWeeksFromToday(weeksFromToday - 1)}
-            >
-              {"<"}
-            </button>
-            <button
-              className="arrowButtons"
-              onClick={() => setWeeksFromToday(weeksFromToday + 1)}
-            >
-              {">"}
-            </button>
-          </div>
-        </div>
-        <div className="wrapper">
-          <div className="weekWrapper">
-            {weekDates.map((day) => (
-              <div
-                key={day.day}
-                id={day.day}
-                className={`weekRow ${day.date === today ? "highlighted" : ""} `}
-              >
-                <div className="day">
-                  <div className="dayText">{day.day}</div>
-                  <div className="dateText">{day.date}</div>
+      <>
+        {sessionInfo && sessionDate && (
+          <div className={`infoPopup ${moreInfo === true ? "shown" : " "}`}>
+            <div className="topContent">
+              <h2 style={{ marginLeft: "10px" }}>{sessionInfo.title}</h2>
+              <button onClick={() => setMoreInfo(false)}>x</button>
+            </div>
+            <div className="popupContent">
+              <h3 style={{ marginBottom: "2px" }}>TA Attendance</h3>
+              {attendance.map((TA) => (
+                <div>
+                  <h4 style={{ marginTop: 0 }}>
+                    {`${TA.Profiles.fname} ${TA.Profiles.lname}: `}
+                    <span
+                      className={`taStatus ${TA.Attendance.length > 0 ? "present" : "absent"}`}
+                    >{`${TA.Attendance.length > 0 ? "Present" : "Absent"}`}</span>
+                  </h4>
                 </div>
-                {sessions.filter((e) => e.days.includes(day.day)).length !=
-                0 ? (
-                  sessions
-                    .filter((e) => e.days.includes(day.day))
-                    .map((e) => (
-                      <div className="events">
-                        <div
-                          className="event"
-                          key={e.id}
-                          onClick={() => {
-                            setMoreInfo(true);
-                            setSessionInfo(e);
-                            setSessionDate(day.date);
-                          }}
-                        >
-                          <h3>
-                            {e.title}_{e.section}
-                          </h3>
-                          <span>Course Name: {e.courseName}</span>
-                          <span>
-                            {e.start}-{e.end}
-                          </span>
-                          <span> {e.location}</span>
-                          {/* You can also display other session details like start time, end time, etc. */}
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="calendar">
+          <div className="sideNav">
+            {/*Calendar Controls */}
+            <div className="calendarControls">
+              <button onClick={() => setWeeksFromToday(0)}>Today</button>
+              <button
+                className="arrowButtons"
+                onClick={() => setWeeksFromToday(weeksFromToday - 1)}
+              >
+                {"<"}
+              </button>
+              <button
+                className="arrowButtons"
+                onClick={() => setWeeksFromToday(weeksFromToday + 1)}
+              >
+                {">"}
+              </button>
+            </div>
+          </div>
+          <div className="wrapper">
+            <div className="weekWrapper">
+              {weekDates.map((day) => (
+                <div
+                  key={day.day}
+                  id={day.day}
+                  className={`weekRow ${day.date === today ? "highlighted" : ""} `}
+                >
+                  <div className="day">
+                    <div className="dayText">{day.day}</div>
+                    <div className="dateText">{day.date}</div>
+                  </div>
+                  {sessions.filter((session) => session.days.includes(day.day))
+                    .length != 0 ? (
+                    sessions
+                      .filter((session) => session.days.includes(day.day))
+                      .map((session) => (
+                        <div className="session">
+                          <div
+                            className="sessionInfo"
+                            key={session.id}
+                            onClick={() => {
+                              if (day.day === today) {
+                                setMoreInfo(true);
+                                setSessionInfo(session);
+                                setSessionDate(day.date);
+                                fetchTAsAttendance(session.id);
+                              }
+                            }}
+                          >
+                            <h3>
+                              {session.title}_{session.section}
+                            </h3>
+                            <span>{session.courseName}</span>
+                            <span>
+                              {session.start}-{session.end}
+                            </span>
+                            <span> {session.location}</span>
+                          </div>
                         </div>
-                      </div>
-                    ))
-                ) : (
-                  <div className="noSessions">No Sessions</div>
-                )}{" "}
-              </div>
-            ))}
+                      ))
+                  ) : (
+                    <div className="noSessions">No Sessions</div>
+                  )}{" "}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </>
     </>
   );
 };
